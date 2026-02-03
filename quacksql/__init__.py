@@ -57,7 +57,7 @@ class _QueryManager:
         self.conn = None
         self.queries = {}
 
-    def connect(self, database: str = ':memory:'):
+    def connect(self, database: str = ':memory:', read_only: bool = False):
         """
         Connect to a DuckDB database
 
@@ -65,11 +65,13 @@ class _QueryManager:
         -----------
         database : str
             Path to database file, or ':memory:' for in-memory database
+        read_only : bool
+            Open the database in read-only mode
         """
         if self.conn:
             self.conn.close()
 
-        self.conn = duckdb.connect(database)
+        self.conn = duckdb.connect(database, read_only=read_only)
         return self
 
     def module(self, filepath: str):
